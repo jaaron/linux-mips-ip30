@@ -1405,7 +1405,7 @@ F:	net/ax25/
 B43 WIRELESS DRIVER
 M:	Stefano Brivio <stefano.brivio@polimi.it>
 L:	linux-wireless@vger.kernel.org
-L:	b43-dev@lists.infradead.org (moderated for non-subscribers)
+L:	b43-dev@lists.infradead.org
 W:	http://linuxwireless.org/en/users/Drivers/b43
 S:	Maintained
 F:	drivers/net/wireless/b43/
@@ -1414,6 +1414,7 @@ B43LEGACY WIRELESS DRIVER
 M:	Larry Finger <Larry.Finger@lwfinger.net>
 M:	Stefano Brivio <stefano.brivio@polimi.it>
 L:	linux-wireless@vger.kernel.org
+L:	b43-dev@lists.infradead.org
 W:	http://linuxwireless.org/en/users/Drivers/b43
 S:	Maintained
 F:	drivers/net/wireless/b43legacy/
@@ -1571,7 +1572,6 @@ F:	drivers/net/ethernet/broadcom/tg3.*
 
 BROADCOM BRCM80211 IEEE802.11n WIRELESS DRIVER
 M:	Brett Rudley <brudley@broadcom.com>
-M:	Henry Ptasinski <henryp@broadcom.com>
 M:	Roland Vossen <rvossen@broadcom.com>
 M:	Arend van Spriel <arend@broadcom.com>
 M:	Franky (Zhenhui) Lin <frankyl@broadcom.com>
@@ -1809,7 +1809,8 @@ F:	Documentation/zh_CN/
 CISCO VIC ETHERNET NIC DRIVER
 M:	Christian Benvenuti <benve@cisco.com>
 M:	Roopa Prabhu <roprabhu@cisco.com>
-M:	David Wang <dwang2@cisco.com>
+M:	Neel Patel <neepatel@cisco.com>
+M:	Nishank Trivedi <nistrive@cisco.com>
 S:	Supported
 F:	drivers/net/ethernet/cisco/enic/
 
@@ -1830,6 +1831,13 @@ M:	Timur Tabi <timur@freescale.com>
 L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
 S:	Supported
 F:	sound/soc/codecs/cs4270*
+
+CLEANCACHE API
+M:	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+L:	linux-kernel@vger.kernel.org
+S:	Maintained
+F:	mm/cleancache.c
+F:	include/linux/cleancache.h
 
 CLK API
 M:	Russell King <linux@arm.linux.org.uk>
@@ -2101,6 +2109,13 @@ W:	http://www.cyclades.com/
 S:	Orphan
 F:	drivers/net/wan/pc300*
 
+CYTTSP TOUCHSCREEN DRIVER
+M:      Javier Martinez Canillas <javier@dowhile0.org>
+L:      linux-input@vger.kernel.org
+S:      Maintained
+F:      drivers/input/touchscreen/cyttsp*
+F:      include/linux/input/cyttsp.h
+
 DAMA SLAVE for AX.25
 M:	Joerg Reuter <jreuter@yaina.de>
 W:	http://yaina.de/jreuter/
@@ -2242,6 +2257,15 @@ F:	Documentation/filesystems/quota.txt
 F:	fs/quota/
 F:	include/linux/quota*.h
 
+DISPLAYLINK USB 2.0 FRAMEBUFFER DRIVER (UDLFB)
+M:	Bernie Thompson <bernie@plugable.com>
+L:	linux-fbdev@vger.kernel.org
+S:	Maintained
+W:	http://plugable.com/category/projects/udlfb/
+F:	drivers/video/udlfb.c
+F:	include/video/udlfb.h
+F:	Documentation/fb/udlfb.txt
+
 DISTRIBUTED LOCK MANAGER (DLM)
 M:	Christine Caulfield <ccaulfie@redhat.com>
 M:	David Teigland <teigland@redhat.com>
@@ -2362,15 +2386,6 @@ L:	dri-devel@lists.freedesktop.org
 S:	Supported
 F:	drivers/gpu/drm/exynos
 F:	include/drm/exynos*
-
-EXYNOS MIPI DISPLAY DRIVERS
-M:	Inki Dae <inki.dae@samsung.com>
-M:	Donghwa Lee <dh09.lee@samsung.com>
-M:	Kyungmin Park <kyungmin.park@samsung.com>
-L:	linux-fbdev@vger.kernel.org
-S:	Maintained
-F:	drivers/video/exynos/exynos_mipi*
-F:	include/video/exynos_mipi*
 
 DSCC4 DRIVER
 M:	Francois Romieu <romieu@fr.zoreil.com>
@@ -2651,6 +2666,21 @@ Extended Verification Module (EVM)
 M:	Mimi Zohar <zohar@us.ibm.com>
 S:	Supported
 F:	security/integrity/evm/
+
+EXYNOS DP DRIVER
+M:	Jingoo Han <jg1.han@samsung.com>
+L:	linux-fbdev@vger.kernel.org
+S:	Maintained
+F:	drivers/video/exynos/exynos_dp*
+
+EXYNOS MIPI DISPLAY DRIVERS
+M:	Inki Dae <inki.dae@samsung.com>
+M:	Donghwa Lee <dh09.lee@samsung.com>
+M:	Kyungmin Park <kyungmin.park@samsung.com>
+L:	linux-fbdev@vger.kernel.org
+S:	Maintained
+F:	drivers/video/exynos/exynos_mipi*
+F:	include/video/exynos_mipi*
 
 F71805F HARDWARE MONITORING DRIVER
 M:	Jean Delvare <khali@linux-fr.org>
@@ -3665,6 +3695,15 @@ S:	Maintained
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git irq/core
 F:	kernel/irq/
 
+IRQ DOMAINS (IRQ NUMBER MAPPING LIBRARY)
+M:	Benjamin Herrenschmidt <benh@kernel.crashing.org>
+M:	Grant Likely <grant.likely@secretlab.ca>
+T:	git git://git.secretlab.ca/git/linux-2.6.git irqdomain/next
+S:	Maintained
+F:	Documentation/IRQ-domain.txt
+F:	include/linux/irqdomain.h
+F:	kernel/irq/irqdomain.c
+
 ISAPNP
 M:	Jaroslav Kysela <perex@perex.cz>
 S:	Maintained
@@ -4061,7 +4100,7 @@ M:	Josh Boyer <jwboyer@gmail.com>
 M:	Matt Porter <mporter@kernel.crashing.org>
 W:	http://www.penguinppc.org/
 L:	linuxppc-dev@lists.ozlabs.org
-T:	git git://git.infradead.org/users/jwboyer/powerpc-4xx.git
+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jwboyer/powerpc-4xx.git
 S:	Maintained
 F:	arch/powerpc/platforms/40x/
 F:	arch/powerpc/platforms/44x/
@@ -4937,8 +4976,6 @@ F:	fs/ocfs2/
 
 ORINOCO DRIVER
 L:	linux-wireless@vger.kernel.org
-L:	orinoco-users@lists.sourceforge.net
-L:	orinoco-devel@lists.sourceforge.net
 W:	http://linuxwireless.org/en/users/Drivers/orinoco
 W:	http://www.nongnu.org/orinoco/
 S:	Orphan
@@ -5344,6 +5381,17 @@ M:	Jim Paris <jim@jtan.com>
 L:	cbe-oss-dev@lists.ozlabs.org
 S:	Maintained
 F:	drivers/block/ps3vram.c
+
+PTP HARDWARE CLOCK SUPPORT
+M:	Richard Cochran <richardcochran@gmail.com>
+S:	Maintained
+W:	http://linuxptp.sourceforge.net/
+F:	Documentation/ABI/testing/sysfs-ptp
+F:	Documentation/ptp/*
+F:	drivers/net/gianfar_ptp.c
+F:	drivers/net/phy/dp83640*
+F:	drivers/ptp/*
+F:	include/linux/ptp_cl*
 
 PTRACE SUPPORT
 M:	Roland McGrath <roland@redhat.com>
@@ -6212,8 +6260,8 @@ L:	sparclinux@vger.kernel.org
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc-2.6.git
 T:	git git://git.kernel.org/pub/scm/linux/kernel/git/davem/sparc-next-2.6.git
 S:	Maintained
+F:	include/linux/sunserialcore.h
 F:	drivers/tty/serial/suncore.c
-F:	drivers/tty/serial/suncore.h
 F:	drivers/tty/serial/sunhv.c
 F:	drivers/tty/serial/sunsab.c
 F:	drivers/tty/serial/sunsab.h
@@ -6394,6 +6442,11 @@ M:	Jon Nettleton <jon.nettleton@gmail.com>
 W:	http://wiki.laptop.org/go/DCON
 S:	Odd Fixes
 F:	drivers/staging/olpc_dcon/
+
+STAGING - OZMO DEVICES USB OVER WIFI DRIVER
+M:	Chris Kelly <ckelly@ozmodevices.com>
+S:	Maintained
+F:	drivers/staging/ozwpan/
 
 STAGING - PARALLEL LCD/KEYPAD PANEL DRIVER
 M:	Willy Tarreau <willy@meta-x.org>
@@ -7495,6 +7548,12 @@ T:	git git://oss.sgi.com/xfs/xfs.git
 S:	Supported
 F:	Documentation/filesystems/xfs.txt
 F:	fs/xfs/
+
+XILINX AXI ETHERNET DRIVER
+M:	Ariane Keller <ariane.keller@tik.ee.ethz.ch>
+M:	Daniel Borkmann <daniel.borkmann@tik.ee.ethz.ch>
+S:	Maintained
+F:	drivers/net/ethernet/xilinx/xilinx_axienet*
 
 XILINX SYSTEMACE DRIVER
 M:	Grant Likely <grant.likely@secretlab.ca>
