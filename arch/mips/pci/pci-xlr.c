@@ -41,6 +41,7 @@
 #include <linux/irq.h>
 #include <linux/irqdesc.h>
 #include <linux/console.h>
+#include <linux/pci_regs.h>
 
 #include <asm/io.h>
 
@@ -168,17 +169,17 @@ static int get_irq_vector(const struct pci_dev *dev)
 	if (dev->bus->self == NULL)
 		return 0;
 
-	switch	(dev->bus->self->devfn) {
-	case 0x0:
+	switch	(PCI_SLOT(dev->bus->self->devfn)) {
+	case 0:
 		return PIC_PCIE_LINK0_IRQ;
-	case 0x8:
+	case 1:
 		return PIC_PCIE_LINK1_IRQ;
-	case 0x10:
+	case 2:
 		if (nlm_chip_is_xls_b())
 			return PIC_PCIE_XLSB0_LINK2_IRQ;
 		else
 			return PIC_PCIE_LINK2_IRQ;
-	case 0x18:
+	case 3:
 		if (nlm_chip_is_xls_b())
 			return PIC_PCIE_XLSB0_LINK3_IRQ;
 		else
@@ -202,7 +203,26 @@ void arch_teardown_msi_irq(unsigned int irq)
 int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
 {
 	struct msi_msg msg;
+	struct pci_bus *bus, *p;
 	int irq, ret;
+	u16 val;
+
+	/* Find the bridge on bus 0 */
+	bus = dev->bus;
+	for (p = bus->parent; p && p->number != 0; p = p->parent)
+		bus = p;
+	if (p == NULL)
+		return 1;
+
+	/*
+	 * Enable MSI which was disabled at enumeration, the bridge
+	 * MSI capability is at 0x50
+	 */
+	pci_read_config_word(bus->self, 0x50 + PCI_MSI_FLAGS, &val);
+	if ((val & PCI_MSI_FLAGS_ENABLE) == 0) {
+		val |= PCI_MSI_FLAGS_ENABLE;
+		pci_write_config_word(bus->self, 0x50 + PCI_MSI_FLAGS, val);
+	}
 
 	irq = get_irq_vector(dev);
 	if (irq <= 0)
