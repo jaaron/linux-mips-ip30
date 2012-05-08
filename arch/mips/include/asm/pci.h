@@ -41,6 +41,13 @@ struct pci_controller {
 	   and XFree86. Eventually will be removed. */
 	unsigned int need_domain_info;
 
+	/* called just before pci_scan_bus is executed */
+	int (*pre_scan)(struct pci_controller *);
+	/* called after pci_scan_bus is executed */
+	int (*post_scan)(struct pci_controller *, struct pci_bus *);
+	/* called in pcibios_enable_resources */
+	int (*pre_enable)(struct pci_controller *, struct pci_dev *, int);
+
 	int iommu;
 
 	/* Optional access methods for reading/writing the bus number

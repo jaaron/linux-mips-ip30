@@ -1028,6 +1028,18 @@ config FB_ATMEL_STN
 
 	  If unsure, say N.
 
+config FB_IMPACT
+	tristate "SGI Octane ImpactSR graphics support"
+	depends on FB && SGI_IP30
+	help
+	  SGI Octane ImpactSR (SI/SSI/MXI/SE/SSE/MXE) graphics card support.
+
+config FB_ODYSSEY
+	tristate "SGI Octane Odyssey graphics support"
+	depends on FB && SGI_IP30
+	help
+	  SGI Octane Odyssey (VPro V6/V8/V10/V12) graphics card support.
+
 config FB_NVIDIA
 	tristate "nVidia Framebuffer Support"
 	depends on FB && PCI

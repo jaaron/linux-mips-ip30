@@ -167,6 +167,14 @@ config SERIO_MACEPS2
 	  To compile this driver as a module, choose M here: the
 	  module will be called maceps2.
 
+config SERIO_SGI_IOC3
+	tristate "SGI IOC3 PS/2 controller"
+	default y
+	depends on SGI_IOC3
+	help
+	  Say Y here if you have an SGI Octane or IOC3 PCI card and you
+	  want to use its keyboard.
+
 config SERIO_LIBPS2
 	tristate "PS/2 driver library" if EXPERT
 	depends on SERIO_I8042 || SERIO_I8042=n

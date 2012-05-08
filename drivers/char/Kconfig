@@ -369,6 +369,14 @@ config DS1302
 
 endif # RTC_LIB
 
+config SGI_IP30_LEDS
+	bool "SGI Octane LED support"
+	depends on SGI_IP30 && SGI_IOC3
+	help
+	  If you say Y here and create a character special file /dev/leds with
+	  major number 10 and minor number 42 using mknod ("man mknod"), you
+	  will be able to control the lightbar on your Octane.
+
 config DTLK
 	tristate "Double Talk PC internal speech card support"
 	depends on ISA

@@ -9,9 +9,15 @@
 #include <linux/pci.h>
 #include <asm/paccess.h>
 #include <asm/pci/bridge.h>
+
+#ifdef CONFIG_SGI_IP30
+#include <asm/mach-ip30/addrs.h>
+#include <asm/mach-ip30/pcibr.h>
+#else
 #include <asm/sn/arch.h>
 #include <asm/sn/intr.h>
 #include <asm/sn/sn0/hub.h>
+#endif
 
 /*
  * Most of the IOC3 PCI config register aren't present

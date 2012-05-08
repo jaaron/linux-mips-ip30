@@ -841,6 +841,17 @@ struct bridge_controller {
 	unsigned int 		irq_cpu;
 	u64			baddr;
 	unsigned int		pci_int[8];
+#ifdef CONFIG_SGI_IP30
+	int			bridge_rev;
+	unsigned int		irq_base;
+	int			slot_be[8];
+	int			slot_bs[8];
+	unsigned int		win_p[8];
+	int			win_io[8];
+	int			win_be[8];
+	unsigned int		dio_p;
+	unsigned int		d32_p;
+#endif
 };
 
 #define BRIDGE_CONTROLLER(bus) \

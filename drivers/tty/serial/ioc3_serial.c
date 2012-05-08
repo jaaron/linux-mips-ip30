@@ -23,6 +23,8 @@
 #include <linux/ioc3.h>
 #include <linux/slab.h>
 
+#include <asm/pci/bridge.h>
+
 /*
  * Interesting things about the ioc3
  */
@@ -50,11 +52,11 @@ static unsigned int Num_of_ioc3_cards;
 static unsigned int Submodule_slot;
 
 /* defining this will get you LOTS of great debug info */
-//#define DEBUG_INTERRUPTS
-#define DPRINT_CONFIG(_x...)	;
-//#define DPRINT_CONFIG(_x...)  printk _x
-#define NOT_PROGRESS()	;
-//#define NOT_PROGRESS()	printk("%s : fails %d\n", __func__, __LINE__)
+#define DEBUG_INTERRUPTS
+//#define DPRINT_CONFIG(_x...)	;
+#define DPRINT_CONFIG(_x...)  printk _x
+//#define NOT_PROGRESS()	;
+#define NOT_PROGRESS()	printk("%s : fails %d\n", __func__, __LINE__)
 
 /* number of characters we want to transmit to the lower level at a time */
 #define MAX_CHARS		256
@@ -118,6 +120,21 @@ static unsigned int Submodule_slot;
 #define PROD_CONS_MASK		PROD_CONS_PTR_4K
 
 #define TOTAL_RING_BUF_SIZE	(RING_BUF_SIZE * 4)
+
+
+static unsigned long ioc3_map(void *ptr, unsigned long dma_attr)
+{
+#if defined(CONFIG_SGI_IP27)
+	return (0xaUL << PCI64_ATTR_TARG_SHFT) | dma_attr |
+		((unsigned long)ptr & TO_PHYS_MASK);
+#elif defined(CONFIG_SGI_IP30)
+	return (0x8UL << PCI64_ATTR_TARG_SHFT) | dma_attr |
+		((unsigned long)ptr & TO_PHYS_MASK);
+#else
+	return virt_to_bus(ptr);
+#endif
+}
+
 
 /* driver specific - one per card */
 struct ioc3_card {
@@ -445,7 +462,8 @@ static int inline port_init(struct ioc3_port *port)
 
 		sbbr_l = &idd->vma->sbbr_l;
 		sbbr_h = &idd->vma->sbbr_h;
-		ring_pci_addr = (unsigned long __iomem)port->ip_dma_ringbuf;
+//		ring_pci_addr = ioc3_map((unsigned long __iomem)port->ip_dma_ringbuf, PCI64_ATTR_BAR);
+		ring_pci_addr = ioc3_map(&port->ip_dma_ringbuf, PCI64_ATTR_BAR);
 		DPRINT_CONFIG(("%s: ring_pci_addr 0x%p\n",
 			       __func__, (void *)ring_pci_addr));
 

@@ -534,6 +534,32 @@ config SGI_IP28
         This is the SGI Indigo2 with R10000 processor.  To compile a Linux
         kernel that runs on these, say Y here.
 
+config SGI_IP30
+	bool "SGI IP30 (Octane/Octane2) (EXPERIMENTAL)"
+	depends on EXPERIMENTAL
+	select ARC
+	select ARC64
+	select BOOT_ELF64
+	select CEVT_R4K
+	select CSRC_R4K
+	select DMA_IP30
+	select DMA_COHERENT
+	select GENERIC_ISA_DMA
+	select HW_HAS_PCI
+	select IRQ_CPU
+	select NR_CPUS_DEFAULT_2
+	select PCI_DOMAINS
+###	select SYS_HAS_EARLY_PRINTK
+	select SYS_HAS_CPU_R10000
+	select SYS_SUPPORTS_64BIT_KERNEL
+	select SYS_SUPPORTS_BIG_ENDIAN
+	select SYS_SUPPORTS_SMP
+	select ARC_MEMORY
+	select ARC_PROMLIB
+	help
+	  These are the SGI Octane and Octane2 graphics workstations.  To
+	  compile a Linux kernel that runs on these, say Y here.
+
 config SGI_IP32
 	bool "SGI IP32 (O2)"
 	select ARC
@@ -952,6 +978,9 @@ config ARCH_DMA_ADDR_T_64BIT
 config DMA_COHERENT
 	bool
 
+config DMA_IP30
+	bool
+
 config DMA_NONCOHERENT
 	bool
 	select NEED_DMA_MAP_STATE
@@ -1178,7 +1207,7 @@ config MIPS_L1_CACHE_SHIFT
 	int
 	default "4" if MACH_DECSTATION || MIKROTIK_RB532 || PMC_MSP4200_EVAL
 	default "6" if MIPS_CPU_SCACHE
-	default "7" if SGI_IP22 || SGI_IP27 || SGI_IP28 || SNI_RM || CPU_CAVIUM_OCTEON
+	default "7" if SGI_IP22 || SGI_IP27 || SGI_IP28 || SGI_IP30 || SNI_RM || CPU_CAVIUM_OCTEON
 	default "5"
 
 config HAVE_STD_PC_SERIAL_PORT
@@ -1190,12 +1219,12 @@ config ARC_CONSOLE
 
 config ARC_MEMORY
 	bool
-	depends on MACH_JAZZ || SNI_RM || SGI_IP32
+	depends on MACH_JAZZ || SNI_RM || SGI_IP30 || SGI_IP32
 	default y
 
 config ARC_PROMLIB
 	bool
-	depends on MACH_JAZZ || SNI_RM || SGI_IP22 || SGI_IP28 || SGI_IP32
+	depends on MACH_JAZZ || SNI_RM || SGI_IP22 || SGI_IP28 || SGI_IP30 || SGI_IP32
 	default y
 
 config ARC64

@@ -103,6 +103,10 @@ static void __devinit pcibios_scanbus(struct pci_controller *hose)
 	hose->need_domain_info = need_domain_info;
 	if (bus) {
 		next_busno = bus->busn_res.end + 1;
+
+		if (hose->post_scan)
+			hose->post_scan(hose, bus);
+
 		/* Don't allow 8-bit bus number overflow inside the hose -
 		   reserve some space for bridges. */
 		if (next_busno > 224) {
@@ -176,6 +180,10 @@ static DEFINE_MUTEX(pci_scan_mutex);
 
 void __devinit register_pci_controller(struct pci_controller *hose)
 {
+	if (hose->pre_scan)
+		if(hose->pre_scan(hose) < 0)
+			goto out;
+
 	if (request_resource(&iomem_resource, hose->mem_resource) < 0)
 		goto out;
 	if (request_resource(&ioport_resource, hose->io_resource) < 0) {
@@ -255,6 +263,7 @@ static int pcibios_enable_resources(struct pci_dev *dev, int mask)
 	u16 cmd, old_cmd;
 	int idx;
 	struct resource *r;
+	struct pci_controller *hose = (struct pci_controller *)dev->sysdata;
 
 	pci_read_config_word(dev, PCI_COMMAND, &cmd);
 	old_cmd = cmd;
@@ -262,6 +271,10 @@ static int pcibios_enable_resources(struct pci_dev *dev, int mask)
 		/* Only set up the requested stuff */
 		if (!(mask & (1<<idx)))
 			continue;
+
+		if(hose->pre_enable)
+			if(hose->pre_enable(hose, dev, idx) < 0)
+				return -EINVAL;
 
 		r = &dev->resource[idx];
 		if (!(r->flags & (IORESOURCE_IO | IORESOURCE_MEM)))

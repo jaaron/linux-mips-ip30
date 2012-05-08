@@ -5,7 +5,7 @@
 #include <asm/cache.h>
 #include <asm-generic/dma-coherent.h>
 
-#ifndef CONFIG_SGI_IP27	/* Kludge to fix 2.6.39 build for IP27 */
+#if !defined(CONFIG_SGI_IP27) && !defined(CONFIG_SGI_IP30) /* Kludge to fix 2.6.39 build for IP27 & IP30 */
 #include <dma-coherence.h>
 #endif
 

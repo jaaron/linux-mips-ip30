@@ -869,4 +869,10 @@ config SND_YMFPCI
 	  To compile this driver as a module, choose M here: the module
 	  will be called snd-ymfpci.
 
+config SND_RAD1
+	tristate "SGI RAD1"
+	depends on SND && SGI_IP30
+	help
+	  Say 'Y' or 'M' to include support for SGI RAD1 Pro Audio in Octane.
+
 endif	# SND_PCI

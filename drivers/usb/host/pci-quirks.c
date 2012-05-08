@@ -448,6 +448,9 @@ static void __devinit quirk_usb_handoff_uhci(struct pci_dev *pdev)
 	unsigned long base = 0;
 	int i;
 
+	if (!pci_enable_device(pdev))
+		return;
+
 	if (!pio_enabled(pdev))
 		return;
 
