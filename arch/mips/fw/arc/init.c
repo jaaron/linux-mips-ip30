@@ -56,4 +56,11 @@ void __init prom_init(void)
 		register_smp_ops(&ip27_smp_ops);
 	}
 #endif
+#ifdef CONFIG_SGI_IP30
+	{
+		extern struct plat_smp_ops ip30_smp_ops;
+
+		register_smp_ops(&ip30_smp_ops);
+	}
+#endif
 }

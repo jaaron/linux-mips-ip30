@@ -54,6 +54,14 @@
 #define XPHYSADDR(a)            ((_ACAST64_(a)) &			\
 				 _CONST64_(0x000000ffffffffff))
 
+#ifndef __ASSEMBLY__
+#ifdef CONFIG_64BIT
+unsigned long kernel_physaddr(unsigned long);
+#else
+#define kernel_physaddr CPHYSADDR
+#endif
+#endif
+
 #ifdef CONFIG_64BIT
 
 /*
