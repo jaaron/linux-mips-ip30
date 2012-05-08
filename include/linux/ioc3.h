@@ -11,7 +11,7 @@
 
 #include <asm/sn/ioc3.h>
 
-#define IOC3_MAX_SUBMODULES	32
+#define IOC3_MAX_SUBMODULES	8
 
 #define IOC3_CLASS_NONE		0
 #define IOC3_CLASS_BASE_IP27	1
@@ -25,22 +25,22 @@
 struct ioc3_driver_data {
 	struct list_head list;
 	int id;				/* IOC3 sequence number */
+	int class;			/* IOC3 type		*/
+
 	/* PCI mapping */
-	unsigned long pma;		/* physical address */
 	struct ioc3 __iomem *vma;	/* pointer to registers */
 	struct pci_dev *pdev;		/* PCI device */
 	/* IRQ stuff */
 	int dual_irq;			/* set if separate IRQs are used */
 	int irq_io, irq_eth;		/* IRQ numbers */
 	/* GPIO magic */
-	spinlock_t gpio_lock;
 	unsigned int gpdr_shadow;
+	spinlock_t gpio_lock;
 	/* NIC identifiers */
 	char nic_part[32];
 	char nic_serial[16];
 	char nic_mac[6];
 	/* submodule set */
-	int class;
 	void *data[IOC3_MAX_SUBMODULES];	/* for submodule use */
 	int active[IOC3_MAX_SUBMODULES];	/* set if probe succeeds */
 	/* is_ir_lock must be held while
@@ -56,10 +56,10 @@ struct ioc3_driver_data {
 struct ioc3_submodule {
 	char *name;		/* descriptive submodule name */
 	struct module *owner;	/* owning kernel module */
-	int ethernet;		/* set for ethernet drivers */
 	int (*probe) (struct ioc3_submodule *, struct ioc3_driver_data *);
 	int (*remove) (struct ioc3_submodule *, struct ioc3_driver_data *);
 	int id;			/* assigned by IOC3, index for the "data" array */
+	int ethernet;		/* set for ethernet drivers */
 	/* IRQ stuff */
 	unsigned int irq_mask;	/* IOC3 IRQ mask, leave clear for Ethernet */
 	int reset_mask;		/* non-zero if you want the ioc3.c module to reset interrupts */
@@ -89,5 +89,7 @@ extern void ioc3_disable(struct ioc3_submodule *, struct ioc3_driver_data *, uns
 extern void ioc3_gpcr_set(struct ioc3_driver_data *, unsigned int);
 /* general ireg writer */
 extern void ioc3_write_ireg(struct ioc3_driver_data *idd, uint32_t value, int reg);
+/* atomically sets/clears GPIO bits */
+extern void ioc3_gpio(struct ioc3_driver_data *, unsigned int, unsigned int);
 
 #endif

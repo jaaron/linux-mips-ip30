@@ -495,8 +495,8 @@ config MIPS_AU1X00_ENET
 	  say Y.  Otherwise, say N.
 
 config SGI_IOC3_ETH
-	bool "SGI IOC3 Ethernet"
-	depends on PCI && SGI_IP27
+	tristate "SGI IOC3 Ethernet"
+	depends on PCI
 	select CRC32
 	select MII
 	help
