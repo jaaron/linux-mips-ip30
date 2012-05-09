@@ -213,7 +213,7 @@ unsigned int get_c0_compare_int(void) {
  
 	/* Return Octane's Timer IRQ */
 ////	return IRQ_TIMER_P(cpu);
-	return 63;
+	return MIPS_CPU_IRQ_BASE + 7;
 }
 
 

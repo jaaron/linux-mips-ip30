@@ -354,7 +354,7 @@ asmlinkage void plat_irq_dispatch(void)
 	pending = read_c0_cause() & read_c0_status();
 	if (pending & CAUSEF_IP7) {			/* IBIT8 - cpu cnt/cmp */
 //		printk(KERN_EMERG "DEBUG: plat_irq_dispatch: CPU %d: CAUSEF_IP7!\n", smp_processor_id());
-		do_IRQ(63);
+		do_IRQ(MIPS_CPU_IRQ_BASE + 7);
 	} else if (unlikely(pending & CAUSEF_IP6)) {	/* IBIT7 - lvl4 - ERR */
 		printk(KERN_EMERG "DEBUG: plat_irq_dispatch: CPU %d: CAUSEF_IP6!\n", smp_processor_id());
 		ip30_do_error_irq();
@@ -430,7 +430,7 @@ void __init arch_init_irq(void)
 	writeq(HEART_BR_ERR_MASK, HEART_IMR(0));
 
 	/* IP30 CPU Timer */
-	irq_set_chip_and_handler(63, &ip30_cpu_irq, handle_percpu_irq);
+	// irq_set_chip_and_handler(63, &ip30_cpu_irq, handle_percpu_irq);
 
 
 	/* XXX: Hardcoded IRQs. This is a mess. */
