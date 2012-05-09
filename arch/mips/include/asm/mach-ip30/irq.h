@@ -34,7 +34,7 @@
 /* 48..49 free irqs */
 
 /* 50 counter irq */
-#define IP30_COUNTER_IRQ	(HEART_IRQ_BASE + 50)
+#define IP30_COUNTER_IRQ	(HEART_IRQ_BASE + IRQ_HEART_CC)
 
 /* 51..63 heart error irqs */
 
