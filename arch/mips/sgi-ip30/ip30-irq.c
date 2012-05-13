@@ -44,41 +44,41 @@ static int heart_irq_owner[NR_IRQS];
 bridge_t *ip30_irq_to_bridge[NR_IRQS];
 unsigned int ip30_irq_to_slot[NR_IRQS];
 
+/* /\* CPU IRQ *\/ */
 
-/* CPU IRQ */
+/* static void enable_cpu_irq(struct irq_data *d) */
+/* { */
+/* 	set_c0_status(STATUSF_IP7); */
+/* } */
 
-static void enable_cpu_irq(struct irq_data *d)
-{
-	set_c0_status(STATUSF_IP7);
-}
+/* static void disable_cpu_irq(struct irq_data *d) */
+/* { */
+/* 	clear_c0_status(STATUSF_IP7); */
+/* } */
 
-static void disable_cpu_irq(struct irq_data *d)
-{
-	clear_c0_status(STATUSF_IP7);
-}
+/* //static void end_cpu_irq(struct irq_data *d) */
+/* //{ */
+/* //	if (!(irq_to_desc(d->irq)->status & (IRQ_DISABLED | IRQ_INPROGRESS))) */
+/* //		enable_cpu_irq(d); */
+/* //} */
 
-//static void end_cpu_irq(struct irq_data *d)
-//{
-//	if (!(irq_to_desc(d->irq)->status & (IRQ_DISABLED | IRQ_INPROGRESS)))
-//		enable_cpu_irq(d);
-//}
-
-static struct irq_chip ip30_cpu_irq = {
-	.name = "IP30 CPU",
-	.irq_enable = enable_cpu_irq,
-	.irq_disable = disable_cpu_irq,
-	.irq_ack = disable_cpu_irq,
-	.irq_eoi = enable_cpu_irq,
-};
-
+/* static struct irq_chip ip30_cpu_irq = { */
+/* 	.name = "IP30 CPU", */
+/* 	.irq_enable = enable_cpu_irq, */
+/* 	.irq_disable = disable_cpu_irq, */
+/* 	.irq_ack = disable_cpu_irq, */
+/* 	.irq_eoi = enable_cpu_irq, */
+/* }; */
 
 
-static noinline void ip30_do_irq(unsigned int irq)
-{
-	irq_enter();
-	generic_handle_irq(irq);
-	irq_exit();
-}
+
+/* static noinline void ip30_do_irq(unsigned int irq) */
+/* { */
+/* 	irq_enter(); */
+/* 	generic_handle_irq(irq); */
+/* 	irq_exit(); */
+/* } */
+
 
 static noinline void ip30_do_error_irq(void)
 {
@@ -160,7 +160,7 @@ static noinline void ip30_do_heart_irq(void)
 	/* poll all IRQs in decreasing priority order */
 	while (irqsel) {
 		if (irqs & irqsel)
-			ip30_do_irq(irqnum);
+			do_IRQ(irqnum);
 		irqsel >>= 1;
 		irqnum--;
 	}
@@ -361,7 +361,7 @@ asmlinkage void plat_irq_dispatch(void)
 	} else if (pending & CAUSEF_IP5) {		/* IBIT6 - lvl3 - HEART TIMER */
 		printk(KERN_EMERG "DEBUG: plat_irq_dispatch: CPU %d: CAUSEF_IP5!\n", smp_processor_id());
 //		ip30_do_heart_irq();
-		ip30_do_irq(IRQ_HEART_CC);
+		do_IRQ(IRQ_HEART_CC);
 	} else if (pending & CAUSEF_IP4) {		/* IBIT5 - lvl2 - IPI, Misc */
 		printk(KERN_EMERG "DEBUG: plat_irq_dispatch: CPU %d: CAUSEF_IP4!\n", smp_processor_id());
 		ip30_do_heart_irq();
