@@ -54,8 +54,8 @@
 
 #else
   /* Xtalk on IP30 */
-  #define IMPACTSR_XTALK_MFGR		0x2aa
-  #define IMPACTSR_XTALK_PART		0xc003
+  #define IMPACT_XTALK_MFGR		0x2aa
+  #define IMPACT_XTALK_PART		0xc003
 
   /* ImpactSR (HQ4) register offsets */
   #define IMPACT_CFIFO(vma)		IMPACT_REG64(vma, 0x20400)
@@ -167,6 +167,8 @@
 #define IMPACT_CMD_HQ_PGSIZE(v)		(0x00482a0400000000L | IMPACT_UNSIGNED(v))
 #define IMPACT_CMD_HQ_STACKPTR(v)	(0x00483a0400000000L | IMPACT_UNSIGNED(v))
 #define IMPACT_CMD_HQ_TXBASE(p)		(0x00482008 | ((p) << 9))
+
+#define IMPACT_CMD_HQ_DMACTRL_0(v)      (0x00080b04000000b1L | ((v) & 8))
 
 #define IMPACT_CMD_HQ_TXMAX(p, v)				\
 	(0x0048300400000000L | IMPACT_UNSIGNED(v) |		\

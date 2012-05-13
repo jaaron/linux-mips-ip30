@@ -65,6 +65,7 @@
   #define MSK_CFIFO_CNT		0x7f
   #define USEPOOLS		4
 #else  /* CONFIG_SGI_IP30 */
+  #include <asm/mach-ip30/xtalk.h>
   /* ImpactSR (HQ4) registers */
   #define VAL_CFIFO_HW		0x47
   #define VAL_CFIFO_LW		0x14
@@ -378,7 +379,7 @@ static void impact_resizekpool(struct fb_info *p, int pool, int size,
 			/* virt_to_page() will blow up the driver if non-coherent. */
 			x = (typeof(x))phys_to_virt(__pa(x));
 #endif
-			ClearPageReserved(virt_to_page(x));
+			ClearPageReserved(virt_to_page(((void*)x)));
 			dma_free_coherent(NULL, PAGE_SIZE, PAR.kpool_virt[pool][i],
 			                  PAR.kpool_phys[pool][i]);
 		}
@@ -407,7 +408,7 @@ static void impact_resizekpool(struct fb_info *p, int pool, int size,
 		/* virt_to_page() will blow up the driver if non-coherent. */
 		x = (typeof(x))phys_to_virt(__pa(x));
 #endif
-		SetPageReserved(virt_to_page(x));
+		SetPageReserved(virt_to_page(((void*)x)));
 
 		PAR.kpool_phys[pool][i] = dma_handle;
 		txtbl[i] = (dma_handle >> PAGE_SHIFT);
@@ -479,7 +480,7 @@ static void impact_debug(struct fb_info *p,int v)
 		for (i = 0; i < 64; i++)
 			impact_rect(p, 4 * (i & 7), 28 - 4 * (i >> 3),
 				    4, 4, (dcntr & (1L << i)) ? 0xa0ff80 : 0x103000,
-				    IMPACTR_LO_COPY);
+				    IMPACT_LO_COPY);
 	}
 }
 #endif
@@ -528,8 +529,15 @@ static void impact_smallcopy(struct fb_info *p, unsigned sx, unsigned sy,
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_XFRCONTROL(8);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_GLINE_XSTARTF(1);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_IR_ALIAS(0x18);
-	IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_DMACTRL_0(8);
-	IMPACT_CFIFO(MMIO) = IMPACT_CMD_XFRCONTROL(9);
+	/* IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_DMACTRL_0(8); */
+	/* IMPACT_CFIFO(MMIO) = IMPACT_CMD_XFRCONTROL(9); */
+
+	/* JAP: I don't really understand this,  but this is at least */
+	/* consistent with the impactsr driver. */
+	IMPACT_CFIFOW(MMIO) = 0x00080b04;
+	IMPACT_CFIFO(MMIO) = 0x000000b900190204L;
+	IMPACT_CFIFOW(MMIO) = 0x00000009;
+
 	impact_wait_dmaready(p);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_GLINE_XSTARTF(0);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_RE_TOGGLECNTX(0);
@@ -567,8 +575,10 @@ static void impact_smallcopy(struct fb_info *p, unsigned sx, unsigned sy,
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_PG_STARTADDR(0);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_PG_LINECNT(h);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_PG_WIDTHA(w << 2);
-	IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_DMACTRL_0(0);
-	IMPACT_CFIFOW1(MMIO) = 0x000e0400;
+	/* IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_DMACTRL_0(0); */
+	IMPACT_CFIFOW(MMIO) = 0x0080b04;
+	IMPACT_CFIFO(MMIO) = 0x000000b1000e0400L;
+	/* IMPACT_CFIFOW1(MMIO) = 0x000e0400; */
 	impact_wait_dma(p);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_GLINE_XSTARTF(0);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_RE_TOGGLECNTX(0);
@@ -698,7 +708,7 @@ static void impact_imageblit_8bpp(struct fb_info *p,
 	/* another workaround.. 33 writes to alpha... hmm... */
 	for (i = 0; i < 33; i++)
 		IMPACT_CFIFO(MMIO) = IMPACT_CMD_ALPHA(0);
-	IMPACTR_CFIFO(MMIO) = IMPACT_CMD_XFRCONTROL(2);
+	IMPACT_CFIFO(MMIO) = IMPACT_CMD_XFRCONTROL(2);
 
 	/* pairs of pixels are sent in two writes to the RE */
 	i = 0;
