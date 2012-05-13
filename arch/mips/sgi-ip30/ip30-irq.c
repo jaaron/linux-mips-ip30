@@ -466,6 +466,7 @@ void __init arch_init_irq(void)
 	printk("IP30: interrupt controller initialized.\n");
 }
 
+#ifdef CONFIG_SMP
 void ip30_init_secondary_irq(void)
 {
 	int cpu = smp_processor_id();
@@ -483,6 +484,7 @@ void ip30_init_secondary_irq(void)
 				 STATUSF_IP5 | STATUSF_IP6);// | STATUSF_IP7);
 	set_c0_status(ST0_IE);
 }
+#endif
 
 //EXPORT_SYMBOL(new_dynamic_irq);
 //EXPORT_SYMBOL(call_dynamic_irq);
