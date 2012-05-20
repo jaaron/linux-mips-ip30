@@ -1028,17 +1028,20 @@ static int __devinit impact_devinit(void)
 	return 0;
 }
 
-static int __devinit impact_probe(struct device *dev)
+static int __devinit impact_probe(struct platform_device *dev)
 {
 	return impact_devinit();
 }
 
-static struct device_driver impact_driver = {
-	.name = "impact",
-	.bus = &platform_bus_type,
-	.owner  = THIS_MODULE,
+static struct platform_driver impact_driver = {
 	.probe = impact_probe,
-	/* Add .remove someday -- these cards aren't exactly PnP. */
+	.driver = {
+		.name = "impact",
+		.bus = &platform_bus_type,
+		.owner  = THIS_MODULE,
+		.probe = impact_probe,
+		/* Add .remove someday -- these cards aren't exactly PnP. */
+	},
 };
 
 static struct platform_device impact_device = {
@@ -1047,12 +1050,12 @@ static struct platform_device impact_device = {
 
 int __init impact_init(void)
 {
-	int ret = driver_register(&impact_driver);
+	int ret = platform_driver_register(&impact_driver);
 
 	if (!ret) {
 		ret = platform_device_register(&impact_device);
 		if (ret)
-			driver_unregister(&impact_driver);
+			platform_driver_unregister(&impact_driver);
 	}
 
 	return ret;
@@ -1060,7 +1063,7 @@ int __init impact_init(void)
 
 void __exit impact_exit(void)
 {
-	 driver_unregister(&impact_driver);
+	 platform_driver_unregister(&impact_driver);
 }
 
 module_init(impact_init);
