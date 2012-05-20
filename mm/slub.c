@@ -5127,6 +5127,7 @@ static int __init slab_sysfs_init(void)
 {
 	struct kmem_cache *s;
 	int err;
+	return 0;
 
 	down_write(&slub_lock);
 
