@@ -462,7 +462,8 @@ void __init arch_init_irq(void)
 	/* mask IP0, IP1 (sw int).  IP7 is brought up in generic MIPS code. */
 	change_c0_status(ST0_IM, STATUSF_IP2 | STATUSF_IP3 | STATUSF_IP4 |
 				 STATUSF_IP5 | STATUSF_IP6);
-	set_c0_status(ST0_IE);
+	/* There's a check in main() with a soft_bug if we enable interrupts here.*/
+	/* set_c0_status(ST0_IE); */
 	printk("IP30: interrupt controller initialized.\n");
 }
 
