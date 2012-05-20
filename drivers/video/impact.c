@@ -316,7 +316,7 @@ static void impact_alloctxtbl(struct fb_info *p, int pool, int pages)
 static void impact_writetxtbl(struct fb_info *p, int pool)
 {
 	impact_wait_cfifo_empty(p);
-	impact_wait_dma(p);
+	//impact_wait_dma(p);
 
 	/* inform the card about a new DMA pool */
 	IMPACT_CFIFOPW1(MMIO) = IMPACT_CMD_HQ_TXBASE(pool);
@@ -333,8 +333,8 @@ static void impact_writetxtbl(struct fb_info *p, int pool)
 	IMPACT_CFIFOPW(MMIO) = 0x000e0100;
 	IMPACT_CFIFOPW(MMIO) = 0x000e0100;
 	IMPACT_CFIFOPW(MMIO) = 0x000e0100;
-	impact_wait_cfifo_empty(p);
-	impact_wait_dmaready(p);
+	/* impact_wait_cfifo_empty(p); */
+	/* impact_wait_dmaready(p); */
 }
 
 #if 0 /* Unused? <kumba@gentoo.org> */
