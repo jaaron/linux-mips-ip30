@@ -116,6 +116,7 @@ static inline unsigned int ok_to_debug_irq(unsigned int irq)
 	case 8:			/* scsi0 */
 	case 9:			/* scsi1 */
 	case 10:		/* eth0 */
+	case 12:                /* IOC3? */
 		return 0;	/* Non-Zero is TRUE in C! */
 		break;
 	default:
@@ -444,9 +445,9 @@ void __init arch_init_irq(void)
 		irq_set_chip_and_handler(i, &ip30_heart_irq, handle_percpu_irq);
 		if (irq_is_reserved(i)) {
 			setup_irq(i, &misc_irqaction);
-			printk(KERN_EMERG "DEBUG: arch_init_irq: Called setup_irq(%d, <func>)!\n", i);
+			// printk(KERN_EMERG "DEBUG: arch_init_irq: Called setup_irq(%d, <func>)!\n", i);
 		}
-		printk(KERN_EMERG "DEBUG: arch_init_irq: Assigned IRQ %d to ip30_heart_irq!\n", i);
+		// printk(KERN_EMERG "DEBUG: arch_init_irq: Assigned IRQ %d to ip30_heart_irq!\n", i);
 	}
 
 
