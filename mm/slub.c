@@ -5381,6 +5381,7 @@ static int __init slab_sysfs_init(void)
 {
 	struct kmem_cache *s;
 	int err;
+	return 0;
 
 	mutex_lock(&slab_mutex);
 
