@@ -237,7 +237,7 @@ static inline void impact_detachtxtbl(struct fb_info *p, unsigned long pool)
 {
 	/* clear DMA pool */
 	impact_wait_cfifo_empty(p);
-	impact_wait_dma(p);
+	//	impact_wait_dma(p);
 	IMPACT_CFIFOPW1(MMIO) = IMPACT_CMD_HQ_TXBASE(pool);
 	IMPACT_CFIFOP(MMIO) = 0x0000000000000009;
 	IMPACT_CFIFOP(MMIO) = IMPACT_CMD_HQ_TXMAX(pool, 0);
