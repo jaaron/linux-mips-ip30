@@ -138,9 +138,11 @@ static int __devinit ioc3kbd_probe(struct ioc3_submodule *is,
 		return 1;
 
 	idd->data[is->id] = d;
-	ioc3_enable(is, idd, is->irq_mask);
+
 	serio_register_port(d->kbd);
 	serio_register_port(d->aux);
+
+	ioc3_enable(is, idd, is->irq_mask);
 
 	return 0;
 }
