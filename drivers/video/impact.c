@@ -192,14 +192,14 @@ static inline void impact_wait_dmaready(struct fb_info *p)
 static void impact_inithq(struct fb_info *p)
 {
 	/* CFIFO parameters */
-	IMPACT_CFIFO_HW(MMIO) = VAL_CFIFO_HW;
-	IMPACT_CFIFO_LW(MMIO) = VAL_CFIFO_LW;
-	IMPACT_CFIFO_DELAY(MMIO) = VAL_CFIFO_DELAY;
+	IMPACT_CFIFO_HW(MMIO)		= VAL_CFIFO_HW;
+	IMPACT_CFIFO_LW(MMIO)		= VAL_CFIFO_LW;
+	IMPACT_CFIFO_DELAY(MMIO)	= VAL_CFIFO_DELAY;
 
 	/* DFIFO parameters */
-	IMPACT_DFIFO_HW(MMIO) = VAL_DFIFO_HW;
-	IMPACT_DFIFO_LW(MMIO) = VAL_DFIFO_LW;
-	IMPACT_DFIFO_DELAY(MMIO) = VAL_DFIFO_DELAY;
+	IMPACT_DFIFO_HW(MMIO)		= VAL_DFIFO_HW;
+	IMPACT_DFIFO_LW(MMIO)		= VAL_DFIFO_LW;
+	IMPACT_DFIFO_DELAY(MMIO)	= VAL_DFIFO_DELAY;
 }
 
 static void impact_initrss(struct fb_info *p)
@@ -975,20 +975,25 @@ static int __devinit impact_devinit(void)
 	gfxaddr = sgi_gfxaddr;
 #else
 	/* Find the first card in Octane */
-	int xwid = ip30_xtalk_find(IMPACT_XTALK_MFGR, IMPACT_XTALK_PART,
-	                           IP30_XTALK_NUM_WID);
-	if (xwid == -1)
-		return -ENODEV;
-	gfxaddr = ip30_xtalk_get_id(xwid);
+	/* int xwid = ip30_xtalk_find(IMPACT_XTALK_MFGR, IMPACT_XTALK_PART, */
+	/*                            IP30_XTALK_NUM_WID); */
+	/* printk(KERN_EMERG "IMPACT: Found card at xwid=%d (dev->id = %x)\n", xwid, dev->id); */
+	/* if (xwid == -1) */
+	/* 	return -ENODEV; */
+	/* if((gfxaddr = ip30_xtalk_get_id(xwid)) == XTALK_NODEV){ */
+	/*     printk(KERN_EMERG "IMPACT: Failed to get mmio_base for card\n"); */
+	/*     return -ENODEV; */
+	/* } */
+	gfxaddr = 0x1c000000; /* The probing above does not seem to
+				 produce the correct answer. */
 #endif
 
-	current_par.open_flag = 0;
-	current_par.mmap_flag = 0;
-	current_par.lock = __SPIN_LOCK_UNLOCKED(current_par.lock);
+	current_par.open_flag	= 0;
+	current_par.mmap_flag	= 0;
+	current_par.lock	= __SPIN_LOCK_UNLOCKED(current_par.lock);
 
-	current_par.mmio_base = gfxaddr;
-	current_par.mmio_virt = (unsigned long)ioremap(current_par.mmio_base,
-	                        0x200000);
+	current_par.mmio_base	= gfxaddr;
+	current_par.mmio_virt	= (unsigned long)ioremap(current_par.mmio_base, 0x200000);
 
 	impact_fix.mmio_start = current_par.mmio_base;
 	impact_fix.mmio_len = 0x200000;
