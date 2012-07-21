@@ -52,7 +52,7 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
 static void __devinit malta_piix_func0_fixup(struct pci_dev *pdev)
 {
 	unsigned char reg_val;
-	static int piixirqmap[16] __initdata = {  /* PIIX PIRQC[A:D] irq mappings */
+	static int piixirqmap[16] __devinitdata = {  /* PIIX PIRQC[A:D] irq mappings */
 		0,  0, 	0,  3,
 		4,  5,  6,  7,
 		0,  9, 10, 11,
