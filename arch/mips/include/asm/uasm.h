@@ -66,8 +66,6 @@ Ip_u3u1u2(_addu);
 Ip_u3u1u2(_and);
 Ip_u2u1u3(_andi);
 Ip_u1u2s3(_bbit0);
-Ip_u1u2s3(_bbit0);
-Ip_u1u2s3(_bbit1);
 Ip_u1u2s3(_bbit1);
 Ip_u1u2s3(_beq);
 Ip_u1u2s3(_beql);
