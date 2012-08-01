@@ -12,6 +12,7 @@ config LEMOTE_FULOONG2E
 	select DMA_NONCOHERENT
 	select BOOT_ELF32
 	select BOARD_SCACHE
+	select HAVE_CLK
 	select HW_HAS_PCI
 	select I8259
 	select ISA
@@ -41,6 +42,7 @@ config LEMOTE_MACH2F
 	select CSRC_R4K if ! MIPS_EXTERNAL_TIMER
 	select DMA_NONCOHERENT
 	select GENERIC_ISA_DMA_SUPPORT_BROKEN
+	select HAVE_CLK
 	select HW_HAS_PCI
 	select I8259
 	select IRQ_CPU
