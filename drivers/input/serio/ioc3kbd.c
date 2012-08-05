@@ -10,6 +10,7 @@
 #include <linux/io.h>
 #include <linux/pci.h>
 #include <linux/serio.h>
+#include <linux/module.h>
 
 #include <linux/ioc3.h>
 
