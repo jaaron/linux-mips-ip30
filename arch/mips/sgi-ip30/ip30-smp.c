@@ -71,7 +71,7 @@ static void ip30_send_ipi_mask(const struct cpumask *mask, unsigned int action)
 int cpu_next_pcpu(int pcpu)
 {
 	int i;
-	for (i = (pcpu + 1) % MP_NCPU; !cpu_isset(i, cpu_possible_map); i = (i + 1) % MP_NCPU)
+	for (i = (pcpu + 1) % MP_NCPU; !cpu_possible(i); i = (i + 1) % MP_NCPU)
 		if(i == pcpu)
 			return pcpu;
 	return i;
@@ -121,10 +121,10 @@ static void __init ip30_smp_setup(void)
 {
         int i, j;
 
-	cpus_clear(cpu_possible_map);
+	//	cpumask_clear(cpu_possible_mask);
 	for (i = 0, j = 0; (i < MP_NCPU) && (j < NR_CPUS); i++) {
 		if (readl(MP_MAGIC(i)) == MPCONF_MAGIC) {
-			cpu_set(i, cpu_possible_map);
+		    // cpu_set(i, cpu_possible_map);
 			set_cpu_possible(i, true);
 			set_cpu_present(i, true);
 			printk(KERN_INFO "Slot: %d PrID: %x PhyID: %x VirtID: %x CPU is present.\n",

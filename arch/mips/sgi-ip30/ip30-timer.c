@@ -14,6 +14,7 @@
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/clocksource.h>
+#include <linux/cpumask.h>
 
 #include <asm/time.h>
 #include <asm/mach-ip30/heart.h>
@@ -221,7 +222,7 @@ void ip30_timer_bcast(void)
 {
 	int i;
 	for (i = 1; i < NR_CPUS; i++)
-		if (cpu_isset(i, cpu_present_map))
+		if (cpu_online(i))
 			writeq(HEART_VEC_TO_IBIT(IRQ_TIMER_P(i)),
 			       HEART_SET_ISR);
 }
