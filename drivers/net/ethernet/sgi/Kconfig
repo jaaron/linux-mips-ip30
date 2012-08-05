@@ -5,7 +5,7 @@
 config NET_VENDOR_SGI
 	bool "SGI devices"
 	default y
-	depends on (PCI && SGI_IP27) || SGI_IP32
+	depends on (PCI && SGI_IP27) || SGI_IP32 || SGI_IP30
 	---help---
 	  If you have a network (Ethernet) card belonging to this class, say Y
 	  and read the Ethernet-HOWTO, available from
@@ -19,8 +19,8 @@ config NET_VENDOR_SGI
 if NET_VENDOR_SGI
 
 config SGI_IOC3_ETH
-	bool "SGI IOC3 Ethernet"
-	depends on PCI && SGI_IP27
+       tristate "SGI IOC3 Ethernet"
+	depends on PCI
 	select CRC32
 	select NET_CORE
 	select MII
