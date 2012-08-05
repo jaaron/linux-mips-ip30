@@ -168,6 +168,8 @@
 #define IMPACT_CMD_HQ_STACKPTR(v)	(0x00483a0400000000L | IMPACT_UNSIGNED(v))
 #define IMPACT_CMD_HQ_TXBASE(p)		(0x00482008 | ((p) << 9))
 
+#define IMPACT_CMD_HQ_DMACTRL_0(v)      (0x00080b04000000b1L | ((v) & 8))
+
 #define IMPACT_CMD_HQ_TXMAX(p, v)				\
 	(0x0048300400000000L | IMPACT_UNSIGNED(v) |		\
 	 ((unsigned long)(p) << 40))

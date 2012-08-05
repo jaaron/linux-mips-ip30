@@ -528,7 +528,7 @@ static void impact_smallcopy(struct fb_info *p, unsigned sx, unsigned sy,
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_XFRCONTROL(8);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_GLINE_XSTARTF(1);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_IR_ALIAS(0x18);
-	IMPACT_CFIFO(MMIO) = impact_cmd_hq_dmactrl_0(0 /* ?? */, 8); // IMPACT_CMD_HQ_DMACTRL_0(8);
+	IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_DMACTRL_0(8);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_XFRCONTROL(9);
 	impact_wait_dmaready(p);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_GLINE_XSTARTF(0);
@@ -567,7 +567,7 @@ static void impact_smallcopy(struct fb_info *p, unsigned sx, unsigned sy,
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_PG_STARTADDR(0);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_PG_LINECNT(h);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_PG_WIDTHA(w << 2);
-	IMPACT_CFIFO(MMIO) = impact_cmd_hq_dmactrl_0(0, 0); // IMPACT_CMD_HQ_DMACTRL_0(0);
+	IMPACT_CFIFO(MMIO) = IMPACT_CMD_HQ_DMACTRL_0(0);
 	IMPACT_CFIFOW1(MMIO) = 0x000e0400;
 	impact_wait_dma(p);
 	IMPACT_CFIFO(MMIO) = IMPACT_CMD_GLINE_XSTARTF(0);
@@ -698,7 +698,7 @@ static void impact_imageblit_8bpp(struct fb_info *p,
 	/* another workaround.. 33 writes to alpha... hmm... */
 	for (i = 0; i < 33; i++)
 		IMPACT_CFIFO(MMIO) = IMPACT_CMD_ALPHA(0);
-	IMPACTR_CFIFO(MMIO) = IMPACT_CMD_XFRCONTROL(2);
+	IMPACT_CFIFO(MMIO) = IMPACT_CMD_XFRCONTROL(2);
 
 	/* pairs of pixels are sent in two writes to the RE */
 	i = 0;
