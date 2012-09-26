@@ -1020,7 +1020,7 @@
 #define __NR_setns			(__NR_Linux + 308)
 #define __NR_process_vm_readv		(__NR_Linux + 309)
 #define __NR_process_vm_writev		(__NR_Linux + 310)
-#define __NR_process_vm_writev		(__NR_Linux + 311)
+#define __NR_kcmp			(__NR_Linux + 311)
 
 /*
  * Offset of the last N32 flavoured syscall
